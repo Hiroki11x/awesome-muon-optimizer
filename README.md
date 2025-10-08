@@ -29,6 +29,11 @@
   - MIT
   - https://arxiv.org/abs/2405.14813
 
+- Duality, Weight Decay, and Metrized Deep Learning
+  - Laker Newhouse
+  - MIT
+  - https://www.lakernewhouse.com/thesis.pdf
+
 ## Theoretical Analysis
 
 - On the Convergence Analysis of Muon
