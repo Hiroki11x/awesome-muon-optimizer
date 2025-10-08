@@ -4,6 +4,31 @@
 
 ## Original Literature
 
+- Muon: An optimizer for hidden layers in neural networks
+  - Keller Jordan
+  - OpenAI
+  - https://kellerjordan.github.io/posts/muon/
+
+- Deriving Muon
+  - Jeremy Bernstein 
+  - MIT
+  - https://jeremybernste.in/writing/deriving-muon
+ 
+- Modular Manifolds
+  - Jeremy Bernstein 
+  - Thinking Machine
+  - https://thinkingmachines.ai/blog/modular-manifolds/
+
+- Old Optimizer, New Norm: An Anthology
+  - Jeremy Bernstein, Laker Newhouse
+  - MIT
+  - https://arxiv.org/abs/2409.20325
+ 
+- Scalable Optimization in the Modular Norm
+  - Tim Large, Yang Liu, Minyoung Huh, Hyojin Bahng, Phillip Isola, Jeremy Bernstein
+  - MIT
+  - https://arxiv.org/abs/2405.14813
+
 ## Theoretical Analysis
 
 - On the Convergence Analysis of Muon
