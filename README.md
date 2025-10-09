@@ -56,6 +56,13 @@
   - UT Austin
   - https://arxiv.org/abs/2506.15054
 
+## Understanding Property
+
+- Muon Outperforms Adam in Tail-End Associative Memory Learning
+  - Shuche Wang, Fengzhuo Zhang, Jiaxiang Li, Cunxiao Du, Chao Du, Tianyu Pang, Zhuoran Yang, Mingyi Hong, Vincent Y. F. Tan
+  - National University of Singapore, University of Minnesota, Sea AI Lab, Yale University
+  - https://arxiv.org/abs/2509.26030
+
 ## Empirical Evaluation
 
 - Practical Efficiency of Muon for Pretraining
