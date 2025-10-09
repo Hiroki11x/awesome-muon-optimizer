@@ -72,6 +72,16 @@
 - Muon is Scalable for LLM Training
   - Moonshot AI (Kimi2), UCLA 
   - https://arxiv.org/abs/2502.16982
+ 
+- Fantastic Pretraining Optimizers and Where to Find Them
+  - Kaiyue Wen, David Hall, Tengyu Ma, Percy Liang
+  - Stanford
+  - https://arxiv.org/abs/2509.02046
+
+- Benchmarking Optimizers for Large Language Model Pretraining
+  - Andrei Semenov, Matteo Pagliardini, Martin Jaggi
+  - EPFL
+  - https://arxiv.org/abs/2509.01440
 
 ## Efficient Algorithm
 
