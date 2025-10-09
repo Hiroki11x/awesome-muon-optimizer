@@ -74,9 +74,14 @@
   - https://arxiv.org/abs/2509.14562
 
 - Effective Quantization of Muon Optimizer States
-  - Aman Gupta, Rafael Celente, Abhishek Shivanna, D. T. Braithwaite, Gregory Dexter, Shao Tang, Hiroto Udagawa, Daniel Silva, Rohan Ramanath, S. Sathiya Keerthi
   - Mubank, LinkedIn
+  - Aman Gupta, Rafael Celente, Abhishek Shivanna, D. T. Braithwaite, Gregory Dexter, Shao Tang, Hiroto Udagawa, Daniel Silva, Rohan Ramanath, S. Sathiya Keerthi
   - https://arxiv.org/abs/2509.23106
+
+- NorMuon: Making Muon more efficient and scalable
+  - Georgia Tech, Microsoft AI
+  - Zichong Li, Liming Liu, Chen Liang, Weizhu Chen, Tuo Zhao
+  - https://arxiv.org/abs/2510.05491
 
 ## Distributed Setting
 
