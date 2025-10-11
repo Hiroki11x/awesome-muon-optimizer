@@ -46,11 +46,6 @@
   - University of Minnesota
   - https://arxiv.org/abs/2502.02900
 
-- Convergence Bound and Critical Batch Size of Muon Optimizer
-  - Naoki Sato, Hiroki Naganuma, Hideaki Iiduka
-  - UMeiji, Mila, Université de Montréal
-  - https://arxiv.org/abs/2507.01598
-
 - Muon Optimizes Under Spectral Norm Constraints
   - Lizhang Chen, Jonathan Li, Qiang Liu
   - UT Austin
@@ -62,6 +57,18 @@
   - Shuche Wang, Fengzhuo Zhang, Jiaxiang Li, Cunxiao Du, Chao Du, Tianyu Pang, Zhuoran Yang, Mingyi Hong, Vincent Y. F. Tan
   - National University of Singapore, University of Minnesota, Sea AI Lab, Yale University
   - https://arxiv.org/abs/2509.26030
+
+## Critical Batch Size
+
+- Optimal Scaling Needs Optimal Norm
+  - Oleg Filatov, Jiangtao Wang, Jan Ebert, Stefan Kesselheim
+  - Julich Supercomputing Centre
+  - https://arxiv.org/abs/2510.03871
+
+- Convergence Bound and Critical Batch Size of Muon Optimizer
+  - Naoki Sato, Hiroki Naganuma, Hideaki Iiduka
+  - UMeiji, Mila, Université de Montréal
+  - https://arxiv.org/abs/2507.01598
 
 ## Empirical Evaluation
 
@@ -126,7 +133,16 @@
   - https://arxiv.org/abs/2502.07529
   - Propose SCION
 
+- REG: A Regularization Optimizer for Robust Training Dynamics
+  - Zehua Liu, Han Wu, Xiaojin Fu, Shuqi Liu, Xiongwei Han, Tao Zhong, Mingxuan Yuan
+  - Huawei Noah’s Ark Lab
+  - https://arxiv.org/abs/2510.03691
+  - Propose REG (Regularized gradient descent)
+
 ## Unclassified
+
+
+
 
 - Muon Optimizer Accelerates Grokking
   - Amund Tveit, Bjørn Remseth, Arve Skogvold
