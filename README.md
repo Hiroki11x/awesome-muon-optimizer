@@ -99,6 +99,11 @@
   - Andrei Semenov, Matteo Pagliardini, Martin Jaggi
   - EPFL
   - https://arxiv.org/abs/2509.01440
+ 
+- Optimization Benchmark for Diffusion Models on Dynamical Systems
+  - Fabian Schaipp
+  - Inria
+  - https://arxiv.org/abs/2510.19376v1
 
 ## Efficient Algorithm
 
