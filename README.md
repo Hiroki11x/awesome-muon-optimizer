@@ -33,6 +33,16 @@
   - Laker Newhouse
   - MIT
   - https://www.lakernewhouse.com/thesis.pdf
+ 
+- Understanding Muon Chapter 1: Into the Matrix
+  - Laker Newhouse
+  - MIT
+  - https://www.lakernewhouse.com/writing/muon-1
+ 
+- Depths of First-Order Optimization
+  - Jeremy Bernstein
+  - MIT
+  - https://docs.google.com/presentation/d/1PIAChMGGwhmdUxDPyOo1o8Qlhq3h_ofV2mhBb6JHH04
 
 ## Theoretical Analysis
 
@@ -139,9 +149,21 @@
   - https://arxiv.org/abs/2510.03691
   - Propose REG (Regularized gradient descent)
 
+## Blog Post
+
+- Deep Learning Optimizers as Steepest Descent in Normed Spaces
+  - Franz Louis Cesista
+  - https://leloykun.github.io/ponder/steepest-descent-opt/
+ 
+- Muon and a Selective Survey on Steepest Descent in Riemannian and Non-Riemannian Manifolds
+  - Franz Louis Cesista
+  - https://leloykun.github.io/ponder/steepest-descent-non-riemannian/
+
+- Squeezing 1-2% Efficiency Gains Out of Muon by Optimizing the Newton-Schulz Coefficients
+  - Franz Louis Cesista
+  - https://leloykun.github.io/ponder/muon-opt-coeffs/
+  
 ## Unclassified
-
-
 
 
 - Muon Optimizer Accelerates Grokking
