@@ -68,6 +68,11 @@
   - National University of Singapore, University of Minnesota, Sea AI Lab, Yale University
   - https://arxiv.org/abs/2509.26030
 
+- How Muon's Spectral Design Benefits Generalization: A Study on Imbalanced Data
+  - Bhavya Vasudeva, Puneesh Deora, Yize Zhao, Vatsal Sharan, Christos Thrampoulidis
+  - University of Southern California, University of British Columbia
+  - https://arxiv.org/abs/2510.22980
+
 ## Critical Batch Size
 
 - Optimal Scaling Needs Optimal Norm
@@ -105,6 +110,11 @@
   - Inria
   - https://arxiv.org/abs/2510.19376v1
 
+- The Potential of Second-Order Optimization for LLMs: A Study with Full Gauss-Newton
+  - Natalie Abreu, Nikhil Vyas, Sham Kakade, Depen Morwani
+  - Harvard University
+  - https://arxiv.org/abs/2510.09378
+
 ## Efficient Algorithm
 
 - LiMuon: Light and Fast Muon Optimizer for Large Models
@@ -134,6 +144,19 @@
   - Mila, Université de Montréal, Concordia
   - https://arxiv.org/abs/2505.23725
 
+- MuonBP: Faster Muon via Block-Periodic Orthogonalization
+  - Ahmed Khaled, Kaan Ozkara, Tao Yu, Mingyi Hong, Youngsuk Park
+  - Princeton University, Amazon Web Services, University of Minnesota, Twin Cities
+  - https://arxiv.org/abs/2510.16981
+
+## Regularization
+
+- Cautious Weight Decay
+  - Lizhang Chen, Jonathan Li, Kaizhao Liang, Baiyu Su, Cong Xie, Nuo Wang Pierse, Chen Liang, Ni Lao, Qiang Liu
+  - University of Texas at Austin, Google
+  - https://arxiv.org/abs/2510.12402
+  - Propose Cautious Weight Decay
+
 ## Enhancement
 
 - MARS: Unleashing the Power of Variance Reduction for Training Large Models
@@ -154,6 +177,12 @@
   - https://arxiv.org/abs/2510.03691
   - Propose REG (Regularized gradient descent)
 
+- Noise-Adaptive Layerwise Learning Rates: Accelerating Geometry-Aware Optimization for Deep Neural Network Training
+  - Jie Hao, Xiaochuan Gong, Jie Xu, Zhengdao Wang, Mingrui Liu
+  - George Mason University
+  - https://arxiv.org/abs/2510.14009
+  - Propose LANTON
+
 ## Blog Post
 
 - Deep Learning Optimizers as Steepest Descent in Normed Spaces
@@ -169,7 +198,6 @@
   - https://leloykun.github.io/ponder/muon-opt-coeffs/
   
 ## Unclassified
-
 
 - Muon Optimizer Accelerates Grokking
   - Amund Tveit, Bjørn Remseth, Arve Skogvold
