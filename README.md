@@ -115,6 +115,11 @@
   - Harvard University
   - https://arxiv.org/abs/2510.09378
 
+- What Really Matters in Matrix-Whitening Optimizers?
+  - Kevin Frans, Pieter Abbeel, Sergey Levine
+  - UC Berkeley
+  - https://arxiv.org/abs/2510.25000
+
 ## Efficient Algorithm
 
 - LiMuon: Light and Fast Muon Optimizer for Large Models
