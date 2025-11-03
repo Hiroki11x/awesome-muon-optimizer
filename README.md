@@ -154,6 +154,13 @@
   - Princeton University, Amazon Web Services, University of Minnesota, Twin Cities
   - https://arxiv.org/abs/2510.16981
 
+## Scaling
+
+- How to Scale Second-Order Optimization
+  - Zixi (Charlie) Chen, Shikai Qiu, Hoang Phan, Qi Lei, Andrew Gordon Wilson
+  - NYU
+  - https://openreview.net/pdf/d9ff9b9df54dd1e155b0d792f9a86d879a81a53c.pdf
+
 ## Regularization
 
 - Cautious Weight Decay
