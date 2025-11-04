@@ -72,6 +72,11 @@
   - Bhavya Vasudeva, Puneesh Deora, Yize Zhao, Vatsal Sharan, Christos Thrampoulidis
   - University of Southern California, University of British Columbia
   - https://arxiv.org/abs/2510.22980
+ 
+- Implicit Bias of Spectral Descent and Muon on Multiclass Separable Data
+  - Chen Fan, Mark Schmidt, Christos Thrampoulidis
+  - University of British Columbia
+  - https://arxiv.org/abs/2502.04664
 
 ## Critical Batch Size
 
