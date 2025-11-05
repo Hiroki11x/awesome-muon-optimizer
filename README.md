@@ -1,10 +1,10 @@
-# 🚀 Awesome Muon Optimizer 
+# Awesome Muon Optimizer 
 
-[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
+<!-- [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome) -->
 ![Papers](https://img.shields.io/badge/papers-60+-blue)
 ![Last Updated](https://img.shields.io/badge/updated-Nov%202025-green)
 
-> 🎯 **A curated list of research on Muon** — a spectrum-aware optimizer that orthogonalizes gradient updates for neural network training. This collection documents the theoretical foundations, empirical evaluations, and practical developments around Muon and related spectral/matrix-based optimization methods.
+> **A curated list of research on Muon** — a spectrum-aware optimizer that orthogonalizes gradient updates for neural network training. This collection documents the theoretical foundations, empirical evaluations, and practical developments around Muon and related spectral/matrix-based optimization methods.
 
 ---
 
