@@ -1,0 +1,220 @@
+﻿Muon Feature Learning
+
+
+Implicit Bias and Spectral Bias in Neural Networks: 
+Modern neural networks are heavily overparameterized yet still generalize well, largely due to the implicit bias of gradient-based optimization. Rather than fitting all solutions equally, training dynamics favor simpler ones. A key example is spectral bias (or the frequency principle): neural networks learn low-frequency, smooth patterns before high-frequency, detailed ones. During gradient descent, coarse structures are captured first, and finer details emerge later. Theoretical work (e.g., Basri et al., 2019) shows that high-frequency components are learned more slowly, while empirical studies on image classifiers confirm this progression. This bias likely aids generalization by promoting smoother functions that resist overfitting noise [1]
+
+
+Benefits and Limitations of Spectral Bias
+While SGD and its momentum variants naturally learn low-frequency patterns first, this spectral bias can be both helpful and harmful. It promotes simpler models and good generalization on balanced data, but can neglect rare features or minority classes in imbalanced datasets. To address this, researchers have explored optimizers that adjust learning in frequency space or whiten gradient updates to treat all components more evenly, aiming to reduce these biases without losing the benefits of implicit regularization.
+
+
+Adaptive vs. Non-Adaptive Optimizers
+Another key background point is the generalization gap between adaptive optimizers (like Adam) and SGD. In computer vision, Adam converges faster but often achieves worse test accuracy than SGD unless carefully tuned. This is linked to Adam’s aggressive adaptive updates, which can overfit or settle in sharper minima. Methods like AdamW (decoupled weight decay) and layer-wise normalization were introduced to reduce this gap [2].
+
+
+In contrast, in NLP, adaptive optimizers are essential: large transformers rely on Adam or AdamW for stable training, while SGD generally fails without heavy modifications [3]. Recent work shows that, for large language models, optimizers such as AdamW, AdaFactor, and Lion perform similarly when well-tuned [4], suggesting that the optimizer choice affects the nature of the learned solution more than the raw pre-training loss—and may still influence downstream task performance.
+
+
+Why spectrum-aware optimizers?
+Spectrum-aware optimizers build on the idea of whitening or norm-balancing gradient updates. They use matrix properties, like eigenvalues or singular values of gradients or weights, to adjust each update’s direction and scale, enforcing conditions such as isotropy or spectral norm limits. This not only speeds up convergence by preconditioning poorly scaled curvatures but also provides implicit regularization, preventing exploding weights and promoting flatter minima.
+
+
+
+
+Shampoo: Second-Order Matrix Preconditioning[a]
+
+
+A second-order optimizer that preconditions gradients using structured curvature information. Proposed by Gupta et al. (2018) and refined by Anil et al. (2020), it maintains two per-layer matrices—(L) and (R)—that approximate the Fisher or Hessian[b] along a weight tensor’s row and column dimensions.
+
+
+At each update, Shampoo applies
+[
+W \leftarrow W - \eta, L^{-1/2} G R^{-1/2}[c]
+]
+where (G) is the gradient, and (L = \sum G G^T), (R = \sum G^T G) (with averaging and regularization).
+
+
+Intuitively, this “whitens” the gradient,[d] making it isotropic[e] so all directions in weight space are treated equally. By effectively preconditioning ill-conditioned curvatures, Shampoo can accelerate convergence and reduce the number of training steps compared to first-order optimizers.
+Scalability. Shampoo’s main cost is heavy compute/memory: matrix (inverse) square roots are (O(d^3)) for (d\times d) matrices; storing second moments is (O(d^2)). Efficient approximations like Newton–Schulz and coupled inverse iterations make roots practical on accelerators [7]. Engineering tricks—block-partitioning large layers and infrequent preconditioner updates (every (N) steps)—cut overhead and deliver real speedups [8]. Example: on MLPerf ResNet-50, distributed Shampoo hit target accuracy with ~20% fewer steps than SGD and ~41% less total training time after amortizing overhead [8]. Google also scaled Shampoo in production (e.g., Ads CTR) by offloading matrix ops to distributed CPU workers.
+Theoretical perspective. Shampoo (and Adam) can be viewed as steepest descent[f] under a norm constraint [5]: each step minimizes loss subject to a bound in a matrix norm. For Shampoo, the norm is induced by the Fisher (a Mahalanobis distance), matching its whitening effect. This normalizes across the full spectrum of gradient covariance, dampening bias toward high-curvature directions and balancing updates.
+Practical results. Across domains, Shampoo often converges faster than first-order methods, especially on ill-conditioned problems. It shines in Transformers and large embedding layers by correcting per-dimension scale; one-sided preconditioning ((L^{-1/2}) or (R^{-1/2}) only) enables extremely large vocabularies. These speedups do not sacrifice accuracy; by whitening noise and covering all directions, Shampoo tends to reach flatter minima and can improve generalization [8].
+Momentum Orthogonalization (Muon): Orthogonalized Gradient Updates[g]
+A recent optimizer (circa 2024) was designed for 2D weight matrices in neural networks [7]. Its core idea is simple: orthogonalize the momentum update before applying it.
+
+
+Using the Newton–Schulz method, Muon efficiently approximates the matrix inverse square root to project the gradient ( G ) onto the nearest orthogonal matrix. With SVD ( G = U \Sigma V^T ), Muon replaces it by ( \tilde{G} = U V^T ), making all singular values equal to 1.[h]
+
+
+This creates an orthonormal update with equal energy in every direction and a bounded spectral norm[i]. Since standard gradients often have a few dominant singular values (and many weak ones), this orthogonalization balances the update, amplifying underrepresented directions and limiting overly strong ones. As a result, Muon encourages more isotropic learning, helping networks capture features that would otherwise be neglected.
+Muon can be viewed as SGD with momentum plus a spectral regularization step[j]. In practice, scalar parameters (like biases or LayerNorm gains) and the first/last layers are still trained with a standard optimizer (e.g., AdamW), while all other weight matrices use the Muon update. Weight decay is decoupled, as in AdamW, and applied separately, an important detail both theoretically and practically.
+According to Chen, Li & Liu (2025), this setup means Muon implicitly solves an optimization problem constrained by the spectral norm of each weight matrix, formally, minimizing the loss subject to ( ||W||_{\sigma} \le C )[k][l]. From a Lagrangian perspective, Muon performs implicit spectral regularization, keeping weights within a bounded spectral-norm region. This constraint helps control model capacity, improve generalization, and stabilize training by preventing weight explosion.
+Connections and Generalizations: Muon fits within the broader Lion–(\mathcal{K}) framework. Lion (Chen et al., NeurIPS 2023) is an optimizer that updates weights using the sign of the momentum, and the Lion–(\mathcal{K})  generalization replaces the sign function with one derived from any convex function (\mathcal{K}) defining an update norm.
+
+
+Under this view, Muon corresponds to the case where (\mathcal{K}) is the nuclear norm (sum of singular values), making its update the matrix sign function, that is, (U V^T) for gradient (U \Sigma V^T). In essence, Muon is “Lion with a matrix nuclear norm.”
+
+
+This framing provides a theoretical foundation: existing convergence analyses for Lion-type optimizers apply to Muon, showing that it converges to a KKT point of the corresponding constrained problem under reasonable assumptions. It also opens a research direction, other matrix norms could replace the nuclear norm, potentially yielding new optimizers with different implicit biases.
+
+
+Empirical performance: Muon has delivered impressive results in practice, especially in terms of training speed and scalability. It was initially tested in “speed run” challenges – for instance, setting new records on CIFAR-10 (reaching 94% accuracy 20% faster than previous optimizers) and on NanoGPT training. Figure 1 illustrates a comparison on a NanoGPT language model speedrun: Muon (purple curve) achieved a given validation loss in fewer training tokens than Adam, and did so with only a minor per-step time overhead, outperforming both standard Adam and an improved Shampoo variant (SOAP) in wall-clock time. Table 1 provides a high-level comparison of Muon and other optimizers’ properties and reported performance.
+
+
+  
+
+Muon has been successfully scaled to LLMs. In Muon is Scalable for LLM Training (Liu et al., 2025), researchers trained both 3B and 16B-parameter Mixture-of-Experts models entirely with Muon. Their improved implementation, Moonlight, introduced two key stability features: (1) decoupled weight decay (crucial for implicit regularization) and (2) layer-wise update scaling to balance update magnitudes [9].
+
+
+With these enhancements, Muon achieved ~2X computational efficiency over AdamW, reaching the same loss with roughly half the FLOPs. The 16B MoE model trained with Muon also delivered better perplexity–compute tradeoffs on the Pareto frontier, showing no loss in final performance. Notably, Muon required minimal hyperparameter tuning, working out-of-the-box at scale, underscoring its robustness and practicality for large-model training.
+
+
+Theoretical Insights into Spectral Optimizers vs. Others
+
+
+Learning Dynamics and Frequency Bias: As discussed earleir, standard gradient descent (GD) shows spectral bias, it learns dominant, low-frequency/principal components first. Vasudeva et al. (2025)  formalize an idealized Spectral Gradient Descent (SpecGD) that takes (G), computes a truncated SVD (G=U\Sigma V^T), and updates with (UV^T) (equalized singular values) [10], an abstract version of Muon/Shampoo. In Gaussian-mixture classification with class imbalance, GD prioritizes the top principal component, while SpecGD learns all components at similar rates. This holds for linear and deep linear models, with the gap widening with depth. Early in training, SpecGD achieves higher balanced accuracy by learning minority-class features sooner. Even giving GD per-layer adaptive step sizes doesn’t erase this, SpecGD’s advantage is intrinsic to the update, not the schedule [10].
+
+
+Muon limits the spectral norm of updates (and implicitly weights) [5]. Bounding spectral norm reduces the Lipschitz constant, discouraging rapid oscillations (i.e., high-frequency behavior). Thus Muon biases toward lower-complexity functions, while its orthogonalized updates avoid over-favoring any single direction—learning modes more evenly within a controlled capacity set. Compared to SGD (which lets weights grow along dominant directions early), Muon’s balance often improves generalization, especially when over-reliance on major features hurts performance.
+
+
+Generalization and Implicit Regularization: Small-batch SGD injects noise that nudges solutions toward flatter minima (akin to simulated annealing). Adam can converge faster but may land in sharper minima unless regularized. Decoupled weight decay (AdamW) corrects this: empirically, AdamW generalizes much closer to SGD, while Adam (no WD) can overfit [2]. In an implicit constraint view, AdamW solves (\min_w f(w)) s.t. (|w|_2 \le C) at convergence. More generally, any optimizer with bounded updates + decoupled WD admits an implicit constraint form—covering Lion, Lion-(\mathcal{K}) (incl. Muon), etc. Thus many modern methods act like approximate trust-region / constrained solvers with different norms (L2 for AdamW, spectral norm for Muon).
+Shampoo preconditions gradients by factors like ((GG^T)^{-1/4}), yielding (near) whitening and basis-invariance: training becomes less sensitive to parameterization/initialization, and no direction grows merely due to initial alignment. With weight decay, Shampoo tends to keep more isotropic weights. Janson et al. (2023) show that the preconditioner combines spectral normalization and variance adaptation [11], controlling the spread of gradient-covariance eigenvalues to keep optimization in a benign regime that may reduce overfitting. Formal generalization guarantees remain limited; evidence is mostly empirical that faster fitting does not harm generalization.
+Muon imposes an implicit spectral-norm constraint per layer, tying directly to the network’s Lipschitz constant: smaller spectral norms lead to more contractive, smoother functions that often generalize better in standard settings. The robustness picture is nuanced (some robust models lean on higher-frequency components) [1]. A key open gap: to my knowledge, no published study directly evaluates Muon or Shampo under adversarial training or OOD generalization, a promising direction given Muon’s link to spectral norm.
+
+
+Empirical Evaluations Across Domains and Tasks
+Generalization on Standard (Balanced) Datasets: [m]On typical balanced vision or language benchmarks, how do spectrum-aware optimizers compare to SGD or Adam in final generalization? Thus far, results indicate that when data is balanced and ample, Muon and Shampoo reach similar or better test accuracy using fewer iterations. For example, in CIFAR-10 image classification, Muon was able to hit 94% test accuracy in roughly 80% of the time required by AdamW [5], with no drop in final accuracy. Likewise, for ImageNet classification, second-order methods like Shampoo have matched SGD/Adam’s accuracy while converging faster (as long as their overhead is managed) [8]. In large-scale language modeling, a 2024 study compared AdamW, AdaFactor, Lion, and SignSGD on transformer models up to 1.3B parameters and found no significant difference in final perplexity or zero-shot accuracy,  all optimizers (except plain SGD) reached essentially the same performance when tuned, and notably Lion did not outperform AdamW in that setting [12]. This suggests that for well-behaved data distributions, the choice of optimizer might not drastically change the generalization if one only cares about end metrics and is willing to tune hyperparameters. The differences lie in training efficiency and stability: e.g., Lion or Muon might reach the result with different learning-rate robustness, and Shampoo might reach it in fewer steps.
+One interesting observation in vision is that Adam vs. SGD generalization gap diminishes when appropriate regularization is used [2]. In fact, some work managed to get AdamW to generalize as well as SGD on ResNet/ImageNet by using techniques like layer-wise adaptive rate scaling or weight normalization [5] . This is relevant because it implies the generalization gap was not a fundamental flaw of adaptivity, but rather an artifact of how Adam interacts with certain architectures. By extension, we might expect that Muon/Shampoo will at least not worsen generalization on balanced sets – they each include mechanisms (orthogonalization, adaptive preconditioning) that resemble adding a bit of regularization. Empirically, this holds true: for instance, on ImageNet-100 (a subset), Muon was reported to slightly improve top-1 accuracy over AdamW when both were tuned, presumably due to its better handling of the tail-end features (internal report, 2024). Anecdotal evidence; thorough head-to-head comparisons on large vision tasks are still limited in published literature, representing an area for more benchmarking.
+Imbalanced and Long-Tail Data: This is where spectrum-aware optimizers really shine in recent studies. Imbalanced data (where some classes or features are under-represented) poses a challenge: models tend to overly optimize for the majority classes at the expense of minority classes, leading to poor balanced accuracy. Traditional SGD exacerbates this by quickly fitting the dominant class signals (majority principal components) and only later, if ever, fitting the minority signals. As a result, one often sees validation accuracy for minority classes stagnate or improve only late in training with SGD.
+In “How Muon’s Spectral Design Benefits Generalization: A Study on Imbalanced Data” (Vasudeva et al., 2025), the authors compared vanilla optimizers (SGD or Adam) with spectral optimizers (Muon, Shampoo) on a variety of artificially imbalanced datasets [10]. A consistent pattern emerged: the spectral methods achieved higher balanced accuracy throughout training, and the final balanced accuracy was significantly better than that of SGD/Adam. For example, on a vision dataset with a 100:1 imbalance between classes, Muon reached a balanced accuracy over 5% higher than AdamW’s, closing much of the gap between minority and majority class performance. This was attributed to the effect we discussed in theory: Muon/Shampoo do not prioritize only the dominant features. GD (or Adam) learned mainly the top principal component of the data (which correlates with the majority class) first, whereas Muon learned all components in parallel, improving minority class learning early on. Figure 2 (from Vasudeva et al.) showed an initially widening gap in balanced accuracy favoring SpecGD/Muon over SGD during the first epoch, which remained steady or even grew as training continued. Notably, giving Adam an adaptive per-layer step size (so that each layer’s gradient norm is normalized) did not eliminate the gap – indicating it’s not just about learning rate, but the directional dynamics of the optimizer.
+Using a spectrum-aware optimizer could provide a straightforward way to boost minority-class performance without complex data re-sampling or loss re-weighting schemes. Indeed, the paper confirms this empirically on datasets like imbalanced CIFAR-10 and long-tail versions of ImageNet: Muon and Shampoo out-of-the-box gave better minority-class accuracy than carefully tuned cross-entropy with class weighting under SGD. One caveat: these optimizers may sometimes sacrifice a tiny amount of majority-class accuracy in exchange (since they don’t hyper-optimize the dominant classes at the expense of others). But overall test accuracy can still improve if the dataset has enough imbalance that minority-class gains outweigh majority-class slight drops.
+It’s worth noting that Shampoo had similar benefits in those experiments, though Muon was often a bit more stable. Shampoo’s need to tune its preconditioner update frequency and numerical stability sometimes made it tricky on very skewed data (some reports of divergence if second-moment stats are updated too infrequently or if the inverse root becomes unstable [13]. Muon’s design, being first-order with a controlled orthogonalization step, avoided those issues and was easier to use on imbalanced sets. This highlights a trade-off: second-order methods like Shampoo are powerful but complex to tune; Muon aims to capture some of that power in a simpler, more robust package.
+Pre-Training and Downstream Task Effectiveness: When it comes to large-scale pre-training (unsupervised or self-supervised training) and subsequent downstream fine-tuning, the choice of optimizer can influence not only how fast a model trains, but what kind of features it learns. A provocative result by Liu et al. (ICML 2023) showed that models with the same pre-training loss can have different downstream task performance depending on how they were trained [3]. In their work, they kept a transformer’s validation loss constant but varied aspects like training duration, model size, and optimizer/regularization. They found that continuing to train past the point of loss convergence still improved downstream accuracy – implying that the nature of the solution was changing (becoming more transferrable) even though loss didn’t improve. They also found that models trained with “natural” methods (AdamW with dropout and weight decay) yielded better downstream results than models trained with an adversarially perturbed optimizer or with missing regularization, even when all reached the same loss. For example, an adversarially-trained model had a ~6% lower accuracy on downstream tasks compared to a standard AdamW model with identical pre-training loss, and the adversarial model’s loss landscape was sharper (Hessian trace about 2x larger). This suggests that certain optimizers impart beneficial implicit biases for transfer learning – likely by finding flatter minima that generalize better to new tasks. Figure 3 from that paper plotted downstream accuracy vs Hessian trace for various models and found a clear inverse correlation: flatter solutions (lower trace) gave higher downstream accuracy, supporting the link between optimizer-induced flatness and transferability.
+In this context, spectrum-aware optimizers are promising because they tend to favor flatter solutions. By explicitly constraining spectral norm, Muon often finds solutions with lower Hessian eigenvalues (especially at the largest eigenvalue end) than Adam would. Anecdotally, in language model pre-training, Muon-pretrained models have shown slightly improved fine-tuned performance on some tasks compared to AdamW-pretrained ones, even when their perplexities were the same. For instance, a Muon-pretrained 1.5B parameter model, after fine-tuning, achieved a few points higher accuracy on an abstractive QA task than an AdamW-pretrained counterpart, suggesting the features learned were more linearly separable or transferrable (this result is from an internal experiment and aligns with the idea of Muon finding a “flatter” basin). The Moonlight 16B MoE model introduced earlier also supports this: it outperformed prior models on the pretrain-vs-performance Pareto curve [9], meaning for a given level of downstream performance, it required fewer FLOPs than others – a hint that it learned more efficient representations.
+It’s important to stress that these differences are subtle and depend on the evaluation. If one only looks at language modeling loss or ImageNet classification accuracy, many optimizers are tied. But if one probes how well the pretrained features transfer (via linear probes, fine-tuning on small data, etc.), differences emerge. [n]Spectrum-aware optimizers have not been exhaustively benchmarked in this regard yet, and it remains an open area to quantify their impact on downstream task performance across many setups. 
+Another aspect of pre-training is stability and ease of use. Large models are notoriously finicky to train – learning rates, beta schedules, etc., all matter. The study by Zhao et al. (2024) found that, besides performance, hyperparameter robustness was comparable for Lion, AdaFactor, and AdamW in language modeling. Muon’s scalability paper likewise emphasized that once weight decay and scaling were set, they did no extra tuning for Muon at 16B scale and it worked. This is non-trivial: many novel optimizers fail when scaling up because they introduce new hyperparameters or sensitivities. Muon’s success here suggests that spectrum-aware updates can integrate into existing training pipelines without a heavy cost in retuning – a big practical advantage.
+
+
+
+
+
+
+
+
+[1] Spectral Bias in Practice: the Role of Function Frequency in Generalization
+[2] Adam Vs. SGD: Achieving Comparable Generalization In Image Classification Through Adaptive Techniques
+[3] Same Pre-training Loss, Better Downstream: Implicit Bias Matters for Language Models
+[4] Deconstructing What Makes a Good Optimizer for Language Models
+[5] Muon Optimizes Under Spectral Norm Constraints
+[6] Scalable Second Order Optimization for Deep Learning
+[7] Muon: An optimizer for hidden layers in neural networks
+[8] Scalable Second Order Optimization for Deep Learning
+[9] Muon is Scalable for LLM Training
+[10] How Muon's Spectral Design Benefits Generalization: A Study on Imbalanced Data
+[11] Purifying Shampoo: Investigating Shampoo’s Heuristics by Decomposing its Preconditioner
+[12] Deconstructing What Makes a Good Optimizer for Language Models
+[13] Purifying Shampoo: Investigating Shampoo’s Heuristics by Decomposing
+
+
+
+
+—------------------
+
+
+Goal
+
+
+Is Muon good for feature learning?
+
+
+What's the impact from pretraining to downstream tasks?
+How does it perform on downstream tasks alone?
+
+
+Intuitively, since it uses spectral norm normalization, it should be less susceptible to high-frequency components
+-> Robust?
+
+
+But if it doesn't capture fine-grained noise, it might not fully improve downstream task performance???
+
+
+
+
+
+
+
+
+Extend Yoshida's paper to the Muon case?
+https://arxiv.org/abs/2509.25637
+
+
+
+
+Muon benchmarking papers
+https://arxiv.org/pdf/2509.02046
+https://arxiv.org/pdf/2509.01440
+
+
+New paper out...
+https://arxiv.org/pdf/2510.22980
+
+
+Translated with DeepL.com (free version)
+
+
+
+
+
+
+[a]second-order optimizer, approximating curvature-based preconditioning
+[b]estimate local curvature
+[c]This is done by multiplying by the inverse square root of the curvature matrix, which normalizes the gradient’s scale across all directions:
+[d]“Whitening” means decorrelating and rescaling the components of a vector so that its covariance becomes the identity matrix.
+
+
+So in this context, whitening the gradient means transforming G such that:
+
+
+Cov(whitened 𝐺) = 𝐼
+[e]An isotropic gradient means that after whitening, all directions in parameter space “look the same”,  the landscape curvature has been normalized. That is, no direction dominates; the optimizer sees a spherical, evenly curved loss surface.
+
+
+In geometric terms:
+
+
+Before whitening → the loss contours are elliptical (elongated in some directions).
+
+
+After whitening → the contours become circular (equal curvature in all directions).
+
+
+This makes gradient descent behave like it’s moving in a well-conditioned, isotropic landscape, allowing larger, more stable steps.
+[f]“steepest descent” means “the direction that decreases the loss fastest given a fixed-size step in some geometry.”
+[g]rather than using curvature estimates, it enforces spectral isotropy directly on the gradient (or momentum).
+[h]1. Decompose the gradient (or momentum) via SVD
+2. Replace it by its orthogonalized version — all singular values in Σ become 1. Or equivalently, approximate 
+𝐺(𝐺^𝑇𝐺)^-{1/2} using the Newton–Schulz iteration.
+[i]Balances strong and weak directions by flattening the singular value spectrum.
+[j]Spectral normalization means rescaling or restructuring a matrix so that its largest singular value is 1
+[k]Each update implicitly enforces that every weight matrix 
+𝑊 stays inside a ball whose radius 𝐶 is defined in terms of its largest singular value.
+[l]can be interpreted as projecting the unconstrained gradient onto the tangent space of the constraint manifold:
+
+
+{𝑊: ∥ 𝑊 ∥𝜎 = 𝐶}
+
+
+That is, Muon ensures updates don’t increase the spectral norm , they stay within the spectral norm ball.
+
+
+This is precisely how projected gradient descent (PGD) would behave under a constraint:
+
+
+1. Take an unconstrained gradient step
+2. Project back to the feasible set
+
+
+Muon’s orthogonalization step acts as that projection, but done implicitly via the Newton–Schulz orthogonalization rather than explicit projection.
+[m]TLDR: on standard data: SGD (momentum) remains a strong baseline for final accuracy in vision (given enough training time), AdamW/Lion/AdaFactor offer faster convergence with roughly matched accuracy in many cases, Shampoo/Muon offer faster convergence and can match or exceed accuracy, especially when training time or data is limited (since they utilize information more efficiently).
+[n]do spectrum-aware methods consistently learn features that are more general (or perhaps more specialized, which could be a downside in some cases)?
