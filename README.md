@@ -184,7 +184,23 @@ How Muon's spectral design affects learning dynamics and feature acquisition.
 - **Implicit Bias of Spectral Descent and Muon on Multiclass Separable Data**
   - Chen Fan, Mark Schmidt, Christos Thrampoulidis (UBC)
   - https://arxiv.org/abs/2502.04664
-  - **Key insight**: Analyzes the implicit bias of spectral descent methods (including Muon) on separable multiclass data. Characterizes what type of solutions these methods converge to compared to standard gradient descent.
+  - **Problem setting**: Multiclass classification on linearly separable data, where multiple separating hyperplanes exist. The implicit bias question: which separator does each optimizer converge to in the limit of gradient flow?
+  - **Classical result (GD)**: Standard gradient descent (GD) on logistic/cross-entropy loss converges to the max-$\ell_2$ margin solution: the separator $w^*$ that maximizes $\min_i \frac{y_i \langle w, x_i \rangle}{\|w\|_2}$ (maximum minimum margin in Euclidean norm).
+  - **Spectral Descent characterization**: The paper analyzes Spectral Gradient Descent (SpecGD), which orthogonalizes gradients before stepping (equivalent to setting all singular values to 1). For a gradient matrix $G$ with classes along columns, SpecGD uses update direction $\tilde{G} = G(G^T G)^{-1/2}$.
+  - **Main theoretical result**: Shows that spectral methods (including Muon) converge to a different implicit bias than standard GD. Rather than maximizing margin in $\ell_2$ norm, they implicitly optimize a margin criterion that accounts for the spectral structure of the data.
+  - **Multiclass specifics**: In the multiclass setting with $K$ classes, the solution space is $\mathbb{R}^{d \times K}$ (weight matrix $W$ with one column per class). The paper characterizes:
+    1. **Direction of convergence**: What directional properties the limit $W^* / \|W^*\|$ satisfies
+    2. **Margin type**: What notion of margin is implicitly maximized (spectral norm-based vs. Frobenius norm-based vs. nuclear norm-based)
+    3. **Class balance**: How the method treats different classes (balanced vs. biased toward majority)
+  - **Comparison to GD**: Key differences in the implicit bias:
+    - **GD**: Converges to max-$\ell_2$ margin, can be biased toward majority classes
+    - **Spectral methods (Muon/SpecGD)**: More balanced treatment of classes due to orthogonalization equalizing contribution from each class's gradient. The margin criterion involves spectral norm $\|W\|_{\sigma} = \sigma_{\max}(W)$ rather than Frobenius norm.
+  - **Practical implications**: 
+    1. On imbalanced multiclass data, Muon's implicit bias leads to better minority-class separation
+    2. The solution is more "democratic" across classes—no single class dominates the parameter updates
+    3. Connects to the imbalanced data results: the implicit bias explains *why* Muon learns minority classes better
+  - **Theoretical tools used**: Likely uses dynamical systems analysis of the gradient flow $\dot{W} = -\nabla L(W)$ vs. spectral flow $\dot{W} = -\text{orth}(\nabla L(W))$, characterizing the limit direction as $t \to \infty$ and $\|W(t)\| \to \infty$ on separable data.
+  - **Connection to max-margin theory**: Extends classical results on implicit bias of GD (Soudry et al., 2018) to spectral/matrix-structured optimizers, providing theoretical foundation for understanding Muon's behavior on classification tasks.
 
 ## Critical Batch Size
 
