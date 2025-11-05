@@ -184,23 +184,83 @@ How Muon's spectral design affects learning dynamics and feature acquisition.
 - **Implicit Bias of Spectral Descent and Muon on Multiclass Separable Data**
   - Chen Fan, Mark Schmidt, Christos Thrampoulidis (UBC)
   - https://arxiv.org/abs/2502.04664
+
+  **TL;DR:** Muon and spectral-type optimizers have an internal bias that automatically pushes them toward solutions that are low-rank and spectrally balanced — even without any explicit regularization.
+
   - **Problem setting**: Multiclass classification on linearly separable data, where multiple separating hyperplanes exist. The implicit bias question: which separator does each optimizer converge to in the limit of gradient flow?
-  - **Classical result (GD)**: Standard gradient descent (GD) on logistic/cross-entropy loss converges to the max-$\ell_2$ margin solution: the separator $w^*$ that maximizes $\min_i \frac{y_i \langle w, x_i \rangle}{\|w\|_2}$ (maximum minimum margin in Euclidean norm).
-  - **Spectral Descent characterization**: The paper analyzes Spectral Gradient Descent (SpecGD), which orthogonalizes gradients before stepping (equivalent to setting all singular values to 1). For a gradient matrix $G$ with classes along columns, SpecGD uses update direction $\tilde{G} = G(G^T G)^{-1/2}$.
+
+  * When an optimizer runs for a very long time and the training loss goes all the way to zero, what exact classifier (or separating boundary) does it end up with?
+
+  *  If multiple different weight matrices can fit the data perfectly, which one does an optimizer like Muon pick, and what does that reveal about its hidden bias?
+
+  * What is the implicit geometric bias of spectral-norm optimizers like Muon — and can we rigorously prove which kind of margin or simplicity they maximize?
+
+  - **Classical result (GD)**: GD on logistic/cross-entropy loss converges to the max-$\ell_2$ margin solution: the separator $w^*$ that maximizes $\min_i \frac{y_i \langle w, x_i \rangle}{\|w\|_2}$ (maximum minimum margin in Euclidean norm).
+
+    **Intuition:**
+    When you train a linear classifier with ordinary gradient descent (say, logistic or cross-entropy loss), the algorithm keeps adjusting the weights to separate the data more confidently.
+
+    As the loss approaches zero, the direction of the weights stops changing—it converges to one specific separator.
+
+    That separator is the one that:
+
+    > maximizes the minimum distance between data points and the decision boundary, measured using the ordinary Euclidean ($L_2$) notion of length.
+
+    So, if you drew the data points and the decision line, gradient descent would naturally pick the most balanced, least-norm line that still cleanly separates everything.
+    This is why:
+
+    “Gradient descent implicitly finds the $L_2$ max-margin classifier.”
+
+  - **Spectral Descent (and Muon) characterization**: The paper analyzes Spectral Gradient Descent (SpecGD), which orthogonalizes gradients before stepping (equivalent to setting all singular values to 1). For a gradient matrix $G$ with classes along columns, SpecGD uses update direction $\tilde{G} = G(G^T G)^{-1/2}$.
+
+  **Intuition**
+
+  Now, if the classifier isn’t just a single vector of weights but a matrix, one row per class, one column per feature. Spectral Descent looks at that whole weight matrix as a geometric object, not as a bag of independent numbers.
+
+  Before taking a step, it orthogonalizes the gradient, it removes scaling differences along different directions and keeps only the shape of the update. Mathematically, that’s like replacing the gradient matrix $G$ with $UV^T$, where $G =U \Sigma V$ is its singular-value decomposition. That means all singular values (strengths along each direction) are set to 1 — so it only follows the directions that matter, not their magnitudes.
+
+  >Spectral Descent (and Muon) move in a way that respects the “spectral geometry” — they pay attention to how correlated different classes and features are, not to the raw coordinate values.
+
+
   - **Main theoretical result**: Shows that spectral methods (including Muon) converge to a different implicit bias than standard GD. Rather than maximizing margin in $\ell_2$ norm, they implicitly optimize a margin criterion that accounts for the spectral structure of the data.
+
+  >All of this means Muon and Spectral Descent don’t just optimize faster — they’re actually aiming for a different kind of simplicity. 
+  >Instead of minimizing “overall size” of the >weights (like Euclidean norm), they minimize the “strongest directional power” of the matrix (its spectral norm).
+
   - **Multiclass specifics**: In the multiclass setting with $K$ classes, the solution space is $\mathbb{R}^{d \times K}$ (weight matrix $W$ with one column per class). The paper characterizes:
+
     1. **Direction of convergence**: What directional properties the limit $W^* / \|W^*\|$ satisfies
     2. **Margin type**: What notion of margin is implicitly maximized (spectral norm-based vs. Frobenius norm-based vs. nuclear norm-based)
     3. **Class balance**: How the method treats different classes (balanced vs. biased toward majority)
+
   - **Comparison to GD**: Key differences in the implicit bias:
     - **GD**: Converges to max-$\ell_2$ margin, can be biased toward majority classes
     - **Spectral methods (Muon/SpecGD)**: More balanced treatment of classes due to orthogonalization equalizing contribution from each class's gradient. The margin criterion involves spectral norm $\|W\|_{\sigma} = \sigma_{\max}(W)$ rather than Frobenius norm.
+
+
+  - **Experimental results:**
+
+  ![Implicit Bias Experiments](implicit%20bias_exps.png)
+  The x-axis = number of training iterations. The y-axis = how close the model’s current margin is to the maximum possible margin under different
+
+  | Panel           | Optimizer        | Which margin increases the most?     | Meaning                                                                                                  |
+| --------------- | ---------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| (a) SignGD      | Max-norm (blue)  | The blue curve rises and dominates   | SignGD naturally prefers the **L∞ margin** — consistent with its L∞ geometry.                            |
+| (b) NGD         | L₂ (orange)      | The orange curve rises and dominates | Gradient descent converges to the **L₂ max-margin separator** — the classical result.                    |
+| (c) Spectral-GD | Spectral (green) | The green curve rises highest        | Spectral Descent converges to the **spectral-norm margin** — i.e., the smallest dominant singular value. |
+| (d) Muon        | Spectral (green) | Same as Spectral-GD                  | Muon behaves just like Spectral Descent — it maximizes the **spectral margin**.                          |
+
+
   - **Practical implications**: 
     1. On imbalanced multiclass data, Muon's implicit bias leads to better minority-class separation
     2. The solution is more "democratic" across classes—no single class dominates the parameter updates
     3. Connects to the imbalanced data results: the implicit bias explains *why* Muon learns minority classes better
-  - **Theoretical tools used**: Likely uses dynamical systems analysis of the gradient flow $\dot{W} = -\nabla L(W)$ vs. spectral flow $\dot{W} = -\text{orth}(\nabla L(W))$, characterizing the limit direction as $t \to \infty$ and $\|W(t)\| \to \infty$ on separable data.
+
+  <!-- - **Theoretical tools used**: Likely uses dynamical systems analysis of the gradient flow $\dot{W} = -\nabla L(W)$ vs. spectral flow $\dot{W} = -\text{orth}(\nabla L(W))$, characterizing the limit direction as $t \to \infty$ and $\|W(t)\| \to \infty$ on separable data. -->
+
   - **Connection to max-margin theory**: Extends classical results on implicit bias of GD (Soudry et al., 2018) to spectral/matrix-structured optimizers, providing theoretical foundation for understanding Muon's behavior on classification tasks.
+
+  
 
 ## Critical Batch Size
 
