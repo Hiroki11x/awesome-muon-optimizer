@@ -269,8 +269,8 @@ starting from $Z_0 = G/\|G\|$. Avoids expensive SVD computation while achieving 
 
 </details>
 
-> [!IMPORTANT]
-> **Featured Paper**: This paper provides crucial theoretical insights into Muon's implicit bias and why it learns more balanced classifiers.
+<!-- > [!IMPORTANT]
+> **Featured Paper**: This paper provides crucial theoretical insights into Muon's implicit bias and why it learns more balanced classifiers. -->
 
 <details open>
 <summary><b>⭐ Implicit Bias of Spectral Descent and Muon on Multiclass Separable Data</b> — <i>Chen Fan, Mark Schmidt, Christos Thrampoulidis (UBC)</i></summary>
