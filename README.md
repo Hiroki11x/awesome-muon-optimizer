@@ -243,12 +243,13 @@ How Muon's spectral design affects learning dynamics and feature acquisition.
   ![Implicit Bias Experiments](implicit%20bias_exps.png)
   The x-axis = number of training iterations. The y-axis = how close the model’s current margin is to the maximum possible margin under different
 
-  | Panel           | Optimizer        | Which margin increases the most?     | Meaning                                                                                                  |
-| --------------- | ---------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| (a) SignGD      | Max-norm (blue)  | The blue curve rises and dominates   | SignGD naturally prefers the **L∞ margin** — consistent with its L∞ geometry.                            |
-| (b) NGD         | L₂ (orange)      | The orange curve rises and dominates | Gradient descent converges to the **L₂ max-margin separator** — the classical result.                    |
-| (c) Spectral-GD | Spectral (green) | The green curve rises highest        | Spectral Descent converges to the **spectral-norm margin** — i.e., the smallest dominant singular value. |
-| (d) Muon        | Spectral (green) | Same as Spectral-GD                  | Muon behaves just like Spectral Descent — it maximizes the **spectral margin**.                          |
+  | Panel | Optimizer | Which margin increases the most? | Meaning |
+|:------|:-----------|:--------------------------------|:---------|
+| (a) SignGD | Max-norm (blue) | The blue curve rises and dominates | SignGD naturally prefers the **L∞ margin** — consistent with its L∞ geometry. |
+| (b) NGD | L₂ (orange) | The orange curve rises and dominates | Gradient descent converges to the **L₂ max-margin separator** — the classical result. |
+| (c) Spectral-GD | Spectral (green) | The green curve rises highest | Spectral Descent converges to the **spectral-norm margin** — i.e., the smallest dominant singular value. |
+| (d) Muon | Spectral (green) | Same as Spectral-GD | Muon behaves just like Spectral Descent — it maximizes the **spectral margin**. |
+
 
 
   - **Practical implications**: 
@@ -260,7 +261,7 @@ How Muon's spectral design affects learning dynamics and feature acquisition.
 
   - **Connection to max-margin theory**: Extends classical results on implicit bias of GD (Soudry et al., 2018) to spectral/matrix-structured optimizers, providing theoretical foundation for understanding Muon's behavior on classification tasks.
 
-  
+
 
 ## Critical Batch Size
 
