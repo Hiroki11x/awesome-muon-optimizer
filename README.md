@@ -2,22 +2,24 @@
 
 A curated list of research on Muon, a spectrum-aware optimizer that orthogonalizes gradient updates for neural network training. This collection documents the theoretical foundations, empirical evaluations, and practical developments around Muon and related spectral/matrix-based optimization methods.
 
-(PR welcome!)
-
 ## Background: Spectral Bias and Adaptive Optimizers
 
 Understanding the motivation for spectrum-aware optimizers like Muon.
 
 - **Spectral Bias in Practice: the Role of Function Frequency in Generalization**
+  - https://papers.neurips.cc/paper_files/paper/2022/file/306264db5698839230be3642aafc849c-Paper-Conference.pdf
   - **Key insight**: Establishes that neural networks learn low-frequency (smooth) patterns before high-frequency (detailed) ones during gradient descent. High-frequency components are learned more slowly. This spectral bias aids generalization on balanced data by promoting smoother functions, but can neglect rare features or minority classes in imbalanced settings. Motivates development of spectrum-aware optimizers.
 
 - **Adam vs. SGD: Achieving Comparable Generalization in Image Classification Through Adaptive Techniques**
+  - https://rjpn.org/ijcspub/viewpaperforall.php?paper=IJCSP25B1033
   - **Key insight**: Shows the generalization gap between Adam and SGD in computer vision can be closed with appropriate techniques (AdamW with decoupled weight decay, layer-wise normalization). Demonstrates that adaptive optimizers' poor generalization was not fundamental but an artifact of missing regularization. AdamW with proper tuning can match SGD's generalization.
 
 - **Same Pre-training Loss, Better Downstream: Implicit Bias Matters for Language Models**
+  - https://arxiv.org/abs/2210.14199
   - **Key insight**: Reveals that models with identical pre-training loss can have vastly different downstream task performance depending on optimizer and training dynamics. Shows ~6% downstream accuracy gap between adversarial and standard training with same loss. Links optimizer choice to solution flatness (Hessian trace): flatter solutions transfer better. Demonstrates optimizer's implicit bias affects feature quality beyond just loss minimization.
 
 - **Deconstructing What Makes a Good Optimizer for Language Models**
+  - https://arxiv.org/abs/2407.07972
   - **Key insight**: Large-scale study (up to 1.3B parameters) comparing AdamW, AdaFactor, Lion, and SignSGD on transformers. Finds these optimizers reach similar final perplexity and zero-shot accuracy when well-tuned, but differ in hyperparameter robustness. Plain SGD fails on transformers without heavy modification. Suggests optimizer choice affects solution nature and downstream performance more than pre-training metrics.
 
 - **Scalable Second Order Optimization for Deep Learning (Shampoo)**
