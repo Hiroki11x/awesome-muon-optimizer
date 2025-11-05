@@ -31,9 +31,9 @@
 > Understanding the motivation for spectrum-aware optimizers like Muon.
 
 <details>
-<summary><b>📄 Spectral Bias in Practice: the Role of Function Frequency in Generalization</b></summary>
+<summary><b>Spectral Bias in Practice: the Role of Function Frequency in Generalization</b></summary>
 
-🔗 [Paper Link](https://papers.neurips.cc/paper_files/paper/2022/file/306264db5698839230be3642aafc849c-Paper-Conference.pdf)
+[Paper Link](https://papers.neurips.cc/paper_files/paper/2022/file/306264db5698839230be3642aafc849c-Paper-Conference.pdf)
 
 - **The phenomenon**: Neural networks exhibit frequency-dependent learning rates during gradient descent. For a function $f$ decomposed into Fourier components $f = \sum_k a_k \phi_k$ (where $\phi_k$ are basis functions at frequency $k$), low-frequency components (small $k$) are learned exponentially faster than high-frequency components (large $k$).
 - **Theoretical characterization**: Basri et al. (2019) showed that for a component at frequency $\omega$, the learning rate effectively scales as $\mathcal{O}(1/\omega^2)$. This means a 10x higher frequency component learns ~100x slower.
@@ -45,9 +45,9 @@
 </details>
 
 <details>
-<summary><b>📄 Adam vs. SGD: Achieving Comparable Generalization in Image Classification Through Adaptive Techniques</b></summary>
+<summary><b>Adam vs. SGD: Achieving Comparable Generalization in Image Classification Through Adaptive Techniques</b></summary>
 
-🔗 [Paper Link](https://rjpn.org/ijcspub/viewpaperforall.php?paper=IJCSP25B1033)
+[Paper Link](https://rjpn.org/ijcspub/viewpaperforall.php?paper=IJCSP25B1033)
 
 - **The generalization gap**: In computer vision tasks (especially ImageNet classification with ResNets), Adam historically achieved 1-3% lower test accuracy than SGD+momentum at similar training loss, despite converging faster.
 - **Root cause**: The gap was not fundamental to adaptive methods but due to: (1) lack of decoupled weight decay, and (2) inappropriate scaling across layers.
@@ -59,9 +59,9 @@
 </details>
 
 <details>
-<summary><b>📄 Same Pre-training Loss, Better Downstream: Implicit Bias Matters for Language Models</b></summary>
+<summary><b>Same Pre-training Loss, Better Downstream: Implicit Bias Matters for Language Models</b></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2210.14199)
+[Paper Link](https://arxiv.org/abs/2210.14199)
 
 - **Core finding**: Models with identical pre-training validation loss can have vastly different downstream task performance. The paper demonstrates this by varying training duration, model size, and optimization method while holding loss constant.
 - **Concrete measurement**: An adversarially-trained model (perturbed optimizer) achieved ~6% lower downstream accuracy than a standard AdamW model, despite both having the same pre-training loss. The adversarial model's Hessian trace was ~2x larger.
@@ -73,9 +73,9 @@
 </details>
 
 <details>
-<summary><b>📄 Deconstructing What Makes a Good Optimizer for Language Models</b></summary>
+<summary><b>Deconstructing What Makes a Good Optimizer for Language Models</b></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2407.07972)
+[Paper Link](https://arxiv.org/abs/2407.07972)
 
 - **Experimental scope**: Systematic comparison of AdamW, AdaFactor, Lion, and SignSGD on transformer language models up to 1.3B parameters across multiple training scales.
 - **Main result - Similar final performance**: When hyperparameters are well-tuned for each optimizer, they reach essentially the same final perplexity and zero-shot downstream accuracy. Differences in final metrics are typically within noise/variance.
@@ -89,9 +89,9 @@
 </details>
 
 <details>
-<summary><b>📄 Scalable Second Order Optimization for Deep Learning (Shampoo)</b> — <i>Rohan Anil et al. (Google)</i></summary>
+<summary><b>Scalable Second Order Optimization for Deep Learning (Shampoo)</b> — <i>Rohan Anil et al. (Google)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2002.09018)
+[Paper Link](https://arxiv.org/abs/2002.09018)
 
 - **The algorithm**: Shampoo preconditions gradients by maintaining two per-layer matrices $L$ and $R$ that approximate the Fisher information or Hessian along row and column dimensions of weight tensors. 
 - **Update rule**: 
@@ -105,9 +105,9 @@
 </details>
 
 <details>
-<summary><b>📄 Purifying Shampoo: Investigating Shampoo's Heuristics by Decomposing its Preconditioner</b> — <i>Luke Jasper Latham, Rene Vidal</i></summary>
+<summary><b>Purifying Shampoo: Investigating Shampoo's Heuristics by Decomposing its Preconditioner</b> — <i>Luke Jasper Latham, Rene Vidal</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2308.09627)
+[Paper Link](https://arxiv.org/abs/2308.09627)
 
 - **Decomposition result**: Shows Shampoo's preconditioner $L^{-1/2} G R^{-1/2}$ can be decomposed into two components:
   1. **Spectral normalization**: Normalizes the spectral norm of the gradient (largest singular value → 1)
@@ -130,9 +130,9 @@
 ### 🎯 Core Papers
 
 <details>
-<summary><b>📘 Muon: An optimizer for hidden layers in neural networks</b> — <i>Keller Jordan (OpenAI)</i></summary>
+<summary><b>Muon: An optimizer for hidden layers in neural networks</b> — <i>Keller Jordan (OpenAI)</i></summary>
 
-🔗 [Blog Post](https://kellerjordan.github.io/posts/muon/)
+[Blog Post](https://kellerjordan.github.io/posts/muon/)
 
 **Core algorithm**: Applies momentum, then orthogonalizes the momentum update before stepping. For gradient $G$ with SVD $G = U\Sigma V^T$, Muon replaces it with $\tilde{G} = UV^T$, setting all singular values to 1. This creates an orthonormal update with equal energy in every direction and bounded spectral norm.
 
@@ -155,9 +155,9 @@ starting from $Z_0 = G/\|G\|$. Avoids expensive SVD computation while achieving 
 </details>
 
 <details>
-<summary><b>📘 Deriving Muon</b> — <i>Jeremy Bernstein (MIT)</i></summary>
+<summary><b>Deriving Muon</b> — <i>Jeremy Bernstein (MIT)</i></summary>
 
-🔗 [Blog Post](https://jeremybernste.in/writing/deriving-muon)
+[Blog Post](https://jeremybernste.in/writing/deriving-muon)
 
 **Steepest descent framework**: Shows that many optimizers (including Muon) can be viewed as steepest descent under different norm constraints. The update is: $w_{t+1} = w_t - \eta \cdot \arg\min_{\|\Delta\|_{\mathcal{K}} \leq 1} \langle \nabla f(w_t), \Delta \rangle$, where $\|\cdot\|_{\mathcal{K}}$ is a norm induced by convex function $\mathcal{K}$.
 
@@ -175,12 +175,12 @@ starting from $Z_0 = G/\|G\|$. Avoids expensive SVD computation while achieving 
 
 | Paper | Author(s) | Link | Key Insight |
 |-------|-----------|------|-------------|
-| **Modular Manifolds** | Jeremy Bernstein | [🔗](https://thinkingmachines.ai/blog/modular-manifolds/) | Establishes geometric/manifold perspective underlying Muon's orthogonalization |
-| **Old Optimizer, New Norm: An Anthology** | Jeremy Bernstein, Laker Newhouse | [🔗](https://arxiv.org/abs/2409.20325) | Historical survey connecting classical methods to modern norm-based perspectives |
-| **Scalable Optimization in the Modular Norm** | Tim Large et al. (MIT) | [🔗](https://arxiv.org/abs/2405.14813) | Develops scalable algorithms for optimization under modular norm constraints |
-| **Duality, Weight Decay, and Metrized Deep Learning** | Laker Newhouse | [🔗](https://www.lakernewhouse.com/thesis.pdf) | PhD thesis on weight decay, duality theory, and metric-based optimization |
-| **Understanding Muon Chapter 1: Into the Matrix** | Laker Newhouse | [🔗](https://www.lakernewhouse.com/writing/muon-1) | Educational deep-dive into Muon's matrix operations and Newton-Schulz iteration |
-| **Depths of First-Order Optimization** | Jeremy Bernstein | [🔗](https://docs.google.com/presentation/d/1PIAChMGGwhmdUxDPyOo1o8Qlhq3h_ofV2mhBb6JHH04) | Presentation on theoretical depths of first-order methods |
+| **Modular Manifolds** | Jeremy Bernstein | [Link](https://thinkingmachines.ai/blog/modular-manifolds/) | Establishes geometric/manifold perspective underlying Muon's orthogonalization |
+| **Old Optimizer, New Norm: An Anthology** | Jeremy Bernstein, Laker Newhouse | [Link](https://arxiv.org/abs/2409.20325) | Historical survey connecting classical methods to modern norm-based perspectives |
+| **Scalable Optimization in the Modular Norm** | Tim Large et al. (MIT) | [Link](https://arxiv.org/abs/2405.14813) | Develops scalable algorithms for optimization under modular norm constraints |
+| **Duality, Weight Decay, and Metrized Deep Learning** | Laker Newhouse | [Link](https://www.lakernewhouse.com/thesis.pdf) | PhD thesis on weight decay, duality theory, and metric-based optimization |
+| **Understanding Muon Chapter 1: Into the Matrix** | Laker Newhouse | [Link](https://www.lakernewhouse.com/writing/muon-1) | Educational deep-dive into Muon's matrix operations and Newton-Schulz iteration |
+| **Depths of First-Order Optimization** | Jeremy Bernstein | [Link](https://docs.google.com/presentation/d/1PIAChMGGwhmdUxDPyOo1o8Qlhq3h_ofV2mhBb6JHH04) | Presentation on theoretical depths of first-order methods |
 
 ---
 
@@ -189,9 +189,9 @@ starting from $Z_0 = G/\|G\|$. Avoids expensive SVD computation while achieving 
 > Convergence properties and optimization-theoretic characterizations of Muon
 
 <details>
-<summary><b>📊 On the Convergence Analysis of Muon</b> — <i>Wei Shen et al. (UVA, UBC, Meta, UW-Madison)</i></summary>
+<summary><b>On the Convergence Analysis of Muon</b> — <i>Wei Shen et al. (UVA, UBC, Meta, UW-Madison)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2505.23737)
+[Paper Link](https://arxiv.org/abs/2505.23737)
 
 **Main result**: Provides convergence rate analysis comparing Muon against Gradient Descent (GD). Establishes conditions under which Muon outperforms GD.
 
@@ -206,9 +206,9 @@ starting from $Z_0 = G/\|G\|$. Avoids expensive SVD computation while achieving 
 </details>
 
 <details>
-<summary><b>📊 A Note on the Convergence of Muon</b> — <i>Jiaxiang Li, Mingyi Hong (University of Minnesota)</i></summary>
+<summary><b>A Note on the Convergence of Muon</b> — <i>Jiaxiang Li, Mingyi Hong (University of Minnesota)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2502.02900)
+[Paper Link](https://arxiv.org/abs/2502.02900)
 
 **Alternative perspective**: Provides convergence analysis under different assumptions than the previous paper, potentially covering different problem classes or relaxing certain conditions.
 
@@ -217,9 +217,9 @@ starting from $Z_0 = G/\|G\|$. Avoids expensive SVD computation while achieving 
 </details>
 
 <details>
-<summary><b>📊 Muon Optimizes Under Spectral Norm Constraints</b> — <i>Lizhang Chen, Jonathan Li, Qiang Liu (UT Austin)</i></summary>
+<summary><b>Muon Optimizes Under Spectral Norm Constraints</b> — <i>Lizhang Chen, Jonathan Li, Qiang Liu (UT Austin)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2506.15054)
+[Paper Link](https://arxiv.org/abs/2506.15054)
 
 **Theoretical framework**: Places Muon within the Lion-K family of optimizers, showing Muon corresponds to Lion-K equipped with the nuclear norm (K is sum of singular values).
 
@@ -244,18 +244,18 @@ starting from $Z_0 = G/\|G\|$. Avoids expensive SVD computation while achieving 
 > How Muon's spectral design affects learning dynamics and feature acquisition
 
 <details>
-<summary><b>🎯 Muon Outperforms Adam in Tail-End Associative Memory Learning</b> — <i>Shuche Wang et al. (NUS, UMN, Sea AI Lab, Yale)</i></summary>
+<summary><b>Muon Outperforms Adam in Tail-End Associative Memory Learning</b> — <i>Shuche Wang et al. (NUS, UMN, Sea AI Lab, Yale)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2509.26030)
+[Paper Link](https://arxiv.org/abs/2509.26030)
 
 **Key insight**: Shows Muon enhances isotropy of weight matrices, leading to more balanced knowledge acquisition. Particularly effective at learning tail-end (rare/infrequent) associations in large language models compared to Adam, which tends to prioritize frequent patterns at the expense of rare ones.
 
 </details>
 
 <details>
-<summary><b>🎯 How Muon's Spectral Design Benefits Generalization: A Study on Imbalanced Data</b> — <i>Bhavya Vasudeva et al. (USC, UBC)</i></summary>
+<summary><b>How Muon's Spectral Design Benefits Generalization: A Study on Imbalanced Data</b> — <i>Bhavya Vasudeva et al. (USC, UBC)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2510.22980)
+[Paper Link](https://arxiv.org/abs/2510.22980)
 
 **Core finding**: Standard GD learns principal components sequentially (dominant first), while Muon/Shampoo learn all components at similar rates, creating more balanced feature learning.
 
@@ -268,11 +268,14 @@ starting from $Z_0 = G/\|G\|$. Avoids expensive SVD computation while achieving 
 **Practical impact**: Provides straightforward way to improve minority-class performance without complex data re-sampling or loss re-weighting schemes. May sacrifice tiny amount of majority-class accuracy but overall test accuracy improves when imbalance is significant.
 
 </details>
- 
-<details>
-<summary><b>🎯 Implicit Bias of Spectral Descent and Muon on Multiclass Separable Data</b> — <i>Chen Fan, Mark Schmidt, Christos Thrampoulidis (UBC)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2502.04664)
+> [!IMPORTANT]
+> **Featured Paper**: This paper provides crucial theoretical insights into Muon's implicit bias and why it learns more balanced classifiers.
+
+<details open>
+<summary><b>⭐ Implicit Bias of Spectral Descent and Muon on Multiclass Separable Data</b> — <i>Chen Fan, Mark Schmidt, Christos Thrampoulidis (UBC)</i></summary>
+
+[Paper Link](https://arxiv.org/abs/2502.04664)
 
 **TL;DR:** Muon and spectral-type optimizers have an internal bias that automatically pushes them toward solutions that are low-rank and spectrally balanced — even without any explicit regularization.
 
@@ -337,18 +340,18 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 > Understanding optimal batch size scaling for Muon in large-scale training
 
 <details>
-<summary><b>📐 Optimal Scaling Needs Optimal Norm</b> — <i>Oleg Filatov et al. (Julich Supercomputing Centre)</i></summary>
+<summary><b>Optimal Scaling Needs Optimal Norm</b> — <i>Oleg Filatov et al. (Julich Supercomputing Centre)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2510.03871)
+[Paper Link](https://arxiv.org/abs/2510.03871)
 
 **Key insight**: Investigates the relationship between optimizer norms and optimal scaling behavior. Shows that different norms (including spectral norm used by Muon) affect the critical batch size and scaling efficiency differently.
 
 </details>
 
 <details>
-<summary><b>📐 Convergence Bound and Critical Batch Size of Muon Optimizer</b> — <i>Naoki Sato et al. (Meiji, Mila, Université de Montréal)</i></summary>
+<summary><b>Convergence Bound and Critical Batch Size of Muon Optimizer</b> — <i>Naoki Sato et al. (Meiji, Mila, Université de Montréal)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2507.01598)
+[Paper Link](https://arxiv.org/abs/2507.01598)
 
 **Four variants analyzed**: Provides convergence proofs for Muon in four practical settings:
 1. Base Muon (no momentum, no weight decay)
@@ -373,9 +376,9 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 > Comprehensive benchmarks and empirical studies comparing Muon to other optimizers
 
 <details>
-<summary><b>🚀 Practical Efficiency of Muon for Pretraining</b> — <i>Essential AI (Ishaan Shah, Anthony M. Polloreno, Karl Stratos, et al.)</i></summary>
+<summary><b>Practical Efficiency of Muon for Pretraining</b> — <i>Essential AI (Ishaan Shah, Anthony M. Polloreno, Karl Stratos, et al.)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2505.02222)
+[Paper Link](https://arxiv.org/abs/2505.02222)
 
 **Main claim**: Muon expands the Pareto frontier over AdamW on the compute-time tradeoff. For a given target loss, Muon reaches it faster in wall-clock time, or given a fixed time budget, Muon reaches lower loss.
 
@@ -390,9 +393,9 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 </details>
 
 <details>
-<summary><b>🚀 Muon is Scalable for LLM Training</b> — <i>Moonshot AI (Kimi2), UCLA</i></summary>
+<summary><b>Muon is Scalable for LLM Training</b> — <i>Moonshot AI (Kimi2), UCLA</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2502.16982)
+[Paper Link](https://arxiv.org/abs/2502.16982)
 
 **Scaling challenges addressed**: Identifies two critical techniques for scaling Muon: (1) adding decoupled weight decay (crucial for implicit regularization), and (2) carefully adjusting per-parameter update scales to balance magnitude across layers.
 
@@ -407,9 +410,9 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 </details>
 
 <details>
-<summary><b>🚀 Muon: Training and Trade-offs with Latent Attention and MoE</b> — <i>Sushant Mehta, Raj Dandekar, Rajat Dandekar, Sreedath Panat</i></summary>
+<summary><b>Muon: Training and Trade-offs with Latent Attention and MoE</b> — <i>Sushant Mehta, Raj Dandekar, Rajat Dandekar, Sreedath Panat</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2509.24406)
+[Paper Link](https://arxiv.org/abs/2509.24406)
 
 **Theoretical contributions**: Rigorous analysis including convergence rates, spectral regularization properties preventing gradient explosion, connection to natural gradient descent on the Stiefel manifold, and equivalence to steepest gradient descent under spectral norm.
 
@@ -428,11 +431,11 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 
 | Paper | Author(s) | Link | Key Finding |
 |-------|-----------|------|-------------|
-| **Fantastic Pretraining Optimizers and Where to Find Them** | Kaiyue Wen et al. (Stanford) | [🔗](https://arxiv.org/abs/2509.02046) | Systematic benchmark across architectures and training scales |
-| **Benchmarking Optimizers for Large Language Model Pretraining** | Andrei Semenov et al. (EPFL) | [🔗](https://arxiv.org/abs/2509.01440) | Comprehensive benchmark up to 1.3B parameters |
-| **Optimization Benchmark for Diffusion Models on Dynamical Systems** | Fabian Schaipp (Inria) | [🔗](https://arxiv.org/abs/2510.19376v1) | Extends evaluation to diffusion models |
-| **The Potential of Second-Order Optimization for LLMs** | Natalie Abreu et al. (Harvard) | [🔗](https://arxiv.org/abs/2510.09378) | Context for Muon's position vs second-order methods |
-| **What Really Matters in Matrix-Whitening Optimizers?** | Kevin Frans et al. (UC Berkeley) | [🔗](https://arxiv.org/abs/2510.25000) | Analyzes essential components of matrix-whitening optimizers |
+| **Fantastic Pretraining Optimizers and Where to Find Them** | Kaiyue Wen et al. (Stanford) | [Link](https://arxiv.org/abs/2509.02046) | Systematic benchmark across architectures and training scales |
+| **Benchmarking Optimizers for Large Language Model Pretraining** | Andrei Semenov et al. (EPFL) | [Link](https://arxiv.org/abs/2509.01440) | Comprehensive benchmark up to 1.3B parameters |
+| **Optimization Benchmark for Diffusion Models on Dynamical Systems** | Fabian Schaipp (Inria) | [Link](https://arxiv.org/abs/2510.19376v1) | Extends evaluation to diffusion models |
+| **The Potential of Second-Order Optimization for LLMs** | Natalie Abreu et al. (Harvard) | [Link](https://arxiv.org/abs/2510.09378) | Context for Muon's position vs second-order methods |
+| **What Really Matters in Matrix-Whitening Optimizers?** | Kevin Frans et al. (UC Berkeley) | [Link](https://arxiv.org/abs/2510.25000) | Analyzes essential components of matrix-whitening optimizers |
 
 ---
 
@@ -441,9 +444,9 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 > Practical improvements reducing Muon's computational and memory costs
 
 <details>
-<summary><b>⚡ LiMuon: Light and Fast Muon Optimizer for Large Models</b> — <i>Feihu Huang et al. (Nanjing U of Aeronautics and Astronautics)</i></summary>
+<summary><b>LiMuon: Light and Fast Muon Optimizer for Large Models</b> — <i>Feihu Huang et al. (Nanjing U of Aeronautics and Astronautics)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2509.14562)
+[Paper Link](https://arxiv.org/abs/2509.14562)
 
 **Variance reduction enhancement**: Adds momentum-based variance reduction to Muon's orthogonalization step, improving convergence rates especially in stochastic settings with high gradient noise.
 
@@ -458,18 +461,18 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 </details>
 
 <details>
-<summary><b>⚡ Effective Quantization of Muon Optimizer States</b> — <i>Aman Gupta et al. (Mubank, LinkedIn)</i></summary>
+<summary><b>Effective Quantization of Muon Optimizer States</b> — <i>Aman Gupta et al. (Mubank, LinkedIn)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2509.23106)
+[Paper Link](https://arxiv.org/abs/2509.23106)
 
 **Key insight**: Demonstrates that Muon's optimizer states can be effectively quantized without significant performance loss. Reduces memory footprint, making Muon more practical for memory-constrained environments and enabling larger models to be trained.
 
 </details>
 
 <details>
-<summary><b>⚡ NorMuon: Making Muon more efficient and scalable</b> — <i>Zichong Li et al. (Georgia Tech, Microsoft AI)</i></summary>
+<summary><b>NorMuon: Making Muon more efficient and scalable</b> — <i>Zichong Li et al. (Georgia Tech, Microsoft AI)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2510.05491)
+[Paper Link](https://arxiv.org/abs/2510.05491)
 
 **Problem identified**: While Muon's orthogonalization reduces condition numbers, it leads to non-uniform neuron norms post-orthogonalization, causing certain neurons to dominate the optimization process.
 
@@ -491,9 +494,9 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 
 | Paper | Author(s) | Link | Key Contribution |
 |-------|-----------|------|------------------|
-| **Dion: Distributed Orthonormalized Updates** | Kwangjun Ahn et al. (Microsoft Research, Harvard) | [🔗](https://arxiv.org/abs/2504.05295) | Extends orthogonalization to distributed training with efficient communication |
-| **MuLoCo: Muon is a practical inner optimizer for DiLoCo** | Benjamin Thérien et al. (Mila, UdM, Concordia) | [🔗](https://arxiv.org/abs/2505.23725) | Muon as inner optimizer for distributed low-communication training |
-| **MuonBP: Faster Muon via Block-Periodic Orthogonalization** | Ahmed Khaled et al. (Princeton, AWS, UMN) | [🔗](https://arxiv.org/abs/2510.16981) | Block-periodic orthogonalization reduces computational overhead |
+| **Dion: Distributed Orthonormalized Updates** | Kwangjun Ahn et al. (Microsoft Research, Harvard) | [Link](https://arxiv.org/abs/2504.05295) | Extends orthogonalization to distributed training with efficient communication |
+| **MuLoCo: Muon is a practical inner optimizer for DiLoCo** | Benjamin Thérien et al. (Mila, UdM, Concordia) | [Link](https://arxiv.org/abs/2505.23725) | Muon as inner optimizer for distributed low-communication training |
+| **MuonBP: Faster Muon via Block-Periodic Orthogonalization** | Ahmed Khaled et al. (Princeton, AWS, UMN) | [Link](https://arxiv.org/abs/2510.16981) | Block-periodic orthogonalization reduces computational overhead |
 
 ---
 
@@ -503,7 +506,7 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 
 | Paper | Author(s) | Link | Key Insight |
 |-------|-----------|------|-------------|
-| **How to Scale Second-Order Optimization** | Zixi (Charlie) Chen et al. (NYU) | [🔗](https://openreview.net/pdf/d9ff9b9df54dd1e155b0d792f9a86d879a81a53c.pdf) | Practical strategies for scaling second-order methods to large neural networks |
+| **How to Scale Second-Order Optimization** | Zixi (Charlie) Chen et al. (NYU) | [Link](https://openreview.net/pdf/d9ff9b9df54dd1e155b0d792f9a86d879a81a53c.pdf) | Practical strategies for scaling second-order methods to large neural networks |
 
 ---
 
@@ -513,7 +516,7 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 
 | Paper | Author(s) | Link | Key Insight |
 |-------|-----------|------|-------------|
-| **Cautious Weight Decay** | Lizhang Chen et al. (UT Austin, Google) | [🔗](https://arxiv.org/abs/2510.12402) | Adaptive weight decay strategy particularly relevant for spectrum-aware optimizers |
+| **Cautious Weight Decay** | Lizhang Chen et al. (UT Austin, Google) | [Link](https://arxiv.org/abs/2510.12402) | Adaptive weight decay strategy particularly relevant for spectrum-aware optimizers |
 
 ---
 
@@ -523,10 +526,10 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 
 | Paper | Author(s) | Link | Key Contribution |
 |-------|-----------|------|------------------|
-| **MARS: Unleashing the Power of Variance Reduction for Training Large Models** | Huizhuo Yuan et al. (ByteDance, UCLA) | [🔗](https://arxiv.org/abs/2411.10438) | Variance reduction + adaptive learning rates |
-| **Training Deep Learning Models with Norm-Constrained LMOs** | Thomas Pethick et al. (EPFL, U Paris-Saclay) | [🔗](https://arxiv.org/abs/2502.07529) | SCION with norm-constrained LMOs |
-| **REG: A Regularization Optimizer for Robust Training Dynamics** | Zehua Liu et al. (Huawei Noah's Ark Lab) | [🔗](https://arxiv.org/abs/2510.03691) | Explicit regularization schemes |
-| **Noise-Adaptive Layerwise Learning Rates** | Jie Hao et al. (George Mason) | [🔗](https://arxiv.org/abs/2510.14009) | LANTON with noise-adaptive layer-wise learning rates |
+| **MARS: Unleashing the Power of Variance Reduction for Training Large Models** | Huizhuo Yuan et al. (ByteDance, UCLA) | [Link](https://arxiv.org/abs/2411.10438) | Variance reduction + adaptive learning rates |
+| **Training Deep Learning Models with Norm-Constrained LMOs** | Thomas Pethick et al. (EPFL, U Paris-Saclay) | [Link](https://arxiv.org/abs/2502.07529) | SCION with norm-constrained LMOs |
+| **REG: A Regularization Optimizer for Robust Training Dynamics** | Zehua Liu et al. (Huawei Noah's Ark Lab) | [Link](https://arxiv.org/abs/2510.03691) | Explicit regularization schemes |
+| **Noise-Adaptive Layerwise Learning Rates** | Jie Hao et al. (George Mason) | [Link](https://arxiv.org/abs/2510.14009) | LANTON with noise-adaptive layer-wise learning rates |
 
 ---
 
@@ -536,9 +539,9 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 
 | Blog Post | Author | Link | Focus |
 |-----------|--------|------|-------|
-| **Deep Learning Optimizers as Steepest Descent in Normed Spaces** | Franz Louis Cesista | [🔗](https://leloykun.github.io/ponder/steepest-descent-opt/) | Theoretical framework made accessible |
-| **Muon and a Selective Survey on Steepest Descent** | Franz Louis Cesista | [🔗](https://leloykun.github.io/ponder/steepest-descent-non-riemannian/) | Geometric perspective on Muon |
-| **Squeezing 1-2% Efficiency Gains Out of Muon** | Franz Louis Cesista | [🔗](https://leloykun.github.io/ponder/muon-opt-coeffs/) | Optimizing Newton-Schulz coefficients |
+| **Deep Learning Optimizers as Steepest Descent in Normed Spaces** | Franz Louis Cesista | [Link](https://leloykun.github.io/ponder/steepest-descent-opt/) | Theoretical framework made accessible |
+| **Muon and a Selective Survey on Steepest Descent** | Franz Louis Cesista | [Link](https://leloykun.github.io/ponder/steepest-descent-non-riemannian/) | Geometric perspective on Muon |
+| **Squeezing 1-2% Efficiency Gains Out of Muon** | Franz Louis Cesista | [Link](https://leloykun.github.io/ponder/muon-opt-coeffs/) | Optimizing Newton-Schulz coefficients |
 
 ---
   
@@ -547,9 +550,9 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 > Papers providing broader context, alternative approaches, or complementary insights
 
 <details>
-<summary><b>🧩 Muon Optimizer Accelerates Grokking</b> — <i>Amund Tveit et al. (Microsoft Norway)</i></summary>
+<summary><b>Muon Optimizer Accelerates Grokking</b> — <i>Amund Tveit et al. (Microsoft Norway)</i></summary>
 
-🔗 [Paper Link](https://arxiv.org/abs/2504.16041)
+[Paper Link](https://arxiv.org/abs/2504.16041)
 
 **What is grokking**: A phenomenon where models exhibit sudden delayed generalization—continuing to train past zero training loss eventually leads to dramatic improvement in test accuracy.
 
@@ -565,10 +568,10 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 
 | Paper | Author(s) | Link | Key Contribution |
 |-------|-----------|------|------------------|
-| **Understanding Gradient Orthogonalization via Non-Euclidean Trust-Region Optimization** | Dmitry Kovalev (Yandex Research) | [🔗](https://arxiv.org/abs/2503.12645) | Trust-region optimization perspective on gradient orthogonalization |
-| **PolarGrad: A Class of Matrix-Gradient Optimizers** | Tim Tsz-Kit Lau et al. (U Penn) | [🔗](https://arxiv.org/abs/2505.21799) | Unifying preconditioning perspective for matrix-gradient methods |
-| **The Polar Express: Optimal Matrix Sign Methods** | Noah Amsel et al. (NYU, Flatiron Institute) | [🔗](https://arxiv.org/abs/2505.16932) | Optimal methods for computing matrix sign function |
-| **Towards understanding of orthogonalization in Muon** | Valentyn Boreiko et al. (U Tübingen, Amazon) | [🔗](https://openreview.net/forum?id=4vzhqq5hpX) | Workshop paper on orthogonalization mechanisms (ICML 2025) |
+| **Understanding Gradient Orthogonalization via Non-Euclidean Trust-Region Optimization** | Dmitry Kovalev (Yandex Research) | [Link](https://arxiv.org/abs/2503.12645) | Trust-region optimization perspective on gradient orthogonalization |
+| **PolarGrad: A Class of Matrix-Gradient Optimizers** | Tim Tsz-Kit Lau et al. (U Penn) | [Link](https://arxiv.org/abs/2505.21799) | Unifying preconditioning perspective for matrix-gradient methods |
+| **The Polar Express: Optimal Matrix Sign Methods** | Noah Amsel et al. (NYU, Flatiron Institute) | [Link](https://arxiv.org/abs/2505.16932) | Optimal methods for computing matrix sign function |
+| **Towards understanding of orthogonalization in Muon** | Valentyn Boreiko et al. (U Tübingen, Amazon) | [Link](https://openreview.net/forum?id=4vzhqq5hpX) | Workshop paper on orthogonalization mechanisms (ICML 2025) |
 
 ---
 
