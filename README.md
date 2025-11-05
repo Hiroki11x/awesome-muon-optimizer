@@ -575,7 +575,7 @@ The x-axis = number of training iterations. The y-axis = how close the model's c
 
 ---
 
-## 🤝 Contributing
+<!-- ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For adding new papers, please maintain the existing format and ensure all links are working.
 
@@ -583,4 +583,4 @@ Contributions are welcome! Please feel free to submit a Pull Request. For adding
 
 [![CC0](https://licensebuttons.net/p/zero/1.0/88x31.png)](https://creativecommons.org/publicdomain/zero/1.0/)
 
-To the extent possible under law, the contributors have waived all copyright and related or neighboring rights to this work.
+To the extent possible under law, the contributors have waived all copyright and related or neighboring rights to this work. -->
