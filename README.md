@@ -44,6 +44,11 @@ Last updated: 2026-02-28
   - https://arxiv.org/abs/2602.04669
   - 2026-02-04
 
+- Adaptive Batch Sizes Using Non-Euclidean Gradient Noise Scales for Stochastic Sign and Spectral Descent
+  - Hiroki Naganuma, Shagun Gupta, Youssef Briki, Ioannis Mitliagkas, Irina Rish, Parameswaran Raman, Hao-Jun Michael Shi
+  - https://arxiv.org/abs/2602.03001
+  - 2026-02-03
+
 - TEON: Tensorized Orthonormalization Beyond Layer-Wise Muon for Large Language Model Pre-Training
   - Ruijie Zhang, Yequan Zhao, Ziyue Liu, Zhengyang Wang, Dongyang Li, Yupeng Su, Sijia Liu, Zheng Zhang
   - https://arxiv.org/abs/2601.23261
@@ -157,6 +162,10 @@ Last updated: 2026-02-28
   - https://arxiv.org/abs/2502.04664
 
 ## Critical Batch Size
+
+- Adaptive Batch Sizes Using Non-Euclidean Gradient Noise Scales for Stochastic Sign and Spectral Descent
+  - Hiroki Naganuma, Shagun Gupta, Youssef Briki, Ioannis Mitliagkas, Irina Rish, Parameswaran Raman, Hao-Jun Michael Shi
+  - https://arxiv.org/abs/2602.03001
 
 - Optimal Scaling Needs Optimal Norm
   - Oleg Filatov, Jiangtao Wang, Jan Ebert, Stefan Kesselheim
