@@ -1,6 +1,68 @@
-# Awesome Muon Optimizer [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
+# Awesome Muon Optimizer [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
 (PR welcome!)
+
+Curated papers, notes, and implementations related to Muon and matrix-orthogonalized optimization.
+
+Last updated: 2026-02-28
+
+## Quick Navigation
+
+- [Recent Additions (2026)](#recent-additions-2026)
+- [Original Literature](#original-literature)
+- [Theoretical Analysis](#theoretical-analysis)
+- [Understanding Muon](#understanding-muon)
+- [Critical Batch Size](#critical-batch-size)
+- [Empirical Evaluation](#empirical-evaluation)
+- [Efficient Algorithms](#efficient-algorithms)
+- [Distributed Setting](#distributed-setting)
+- [Scaling](#scaling)
+- [Regularization](#regularization)
+- [Enhancement](#enhancement)
+- [Blog Post](#blog-post)
+- [Unclassified](#unclassified)
+
+## Recent Additions (2026)
+
+- Muon+: Towards Better Muon via One Additional Normalization Step
+  - Ruijie Zhang, Yequan Zhao, Ziyue Liu, Zhengyang Wang, Zheng Zhang
+  - https://arxiv.org/abs/2602.21545
+  - 2026-02-25
+
+- Muon with Spectral Guidance: Efficient Optimization for Scientific Machine Learning
+  - Binghang Lu, Jiahao Zhang, Guang Lin
+  - https://arxiv.org/abs/2602.16167
+  - 2026-02-18
+
+- Muon in Associative Memory Learning: Training Dynamics and Scaling Laws
+  - Binghui Li, Kaifei Wang, Han Zhong, Pinyan Lu, Liwei Wang
+  - https://arxiv.org/abs/2602.05725
+  - 2026-02-05
+
+- Delving into Muon and Beyond: Deep Analysis and Extensions
+  - Xianbiao Qi, Marco Chen, Jiaquan Ye, Yelin He, Rong Xiao
+  - https://arxiv.org/abs/2602.04669
+  - 2026-02-04
+
+- TEON: Tensorized Orthonormalization Beyond Layer-Wise Muon for Large Language Model Pre-Training
+  - Ruijie Zhang, Yequan Zhao, Ziyue Liu, Zhengyang Wang, Dongyang Li, Yupeng Su, Sijia Liu, Zheng Zhang
+  - https://arxiv.org/abs/2601.23261
+  - 2026-01-30
+
+- Improved Convergence Rates of Muon Optimizer for Nonconvex Optimization
+  - Shuntaro Nagashima, Hideaki Iiduka
+  - https://arxiv.org/abs/2601.19400
+  - 2026-01-27
+
+- Preconditioning Benefits of Spectral Orthogonalization in Muon
+  - Jianhao Ma, Yu Huang, Yuejie Chi, Yuxin Chen
+  - https://arxiv.org/abs/2601.13474
+  - 2026-01-20
+
+- UNSO: Unified Newton Schulz Orthogonalization
+  - Chen Hu, Qianxi Zhao, Yuming Li, Mingyu Zhou, Xiyin Li
+  - https://arxiv.org/abs/2602.02500
+  - 2026-01-18
 
 ## Original Literature
 
@@ -46,6 +108,18 @@
 
 ## Theoretical Analysis
 
+- Improved Convergence Rates of Muon Optimizer for Nonconvex Optimization
+  - Shuntaro Nagashima, Hideaki Iiduka
+  - https://arxiv.org/abs/2601.19400
+
+- Preconditioning Benefits of Spectral Orthogonalization in Muon
+  - Jianhao Ma, Yu Huang, Yuejie Chi, Yuxin Chen
+  - https://arxiv.org/abs/2601.13474
+
+- Delving into Muon and Beyond: Deep Analysis and Extensions
+  - Xianbiao Qi, Marco Chen, Jiaquan Ye, Yelin He, Rong Xiao
+  - https://arxiv.org/abs/2602.04669
+
 - On the Convergence Analysis of Muon
   - Da Chang, Yongxiang Liu, Ganzhao Yuan
   - University of Virginia, University of British Columbia, Meta, University of Wisconsin-Madison
@@ -61,7 +135,11 @@
   - UT Austin
   - https://arxiv.org/abs/2506.15054
 
-## Understanding Property
+## Understanding Muon
+
+- Muon in Associative Memory Learning: Training Dynamics and Scaling Laws
+  - Binghui Li, Kaifei Wang, Han Zhong, Pinyan Lu, Liwei Wang
+  - https://arxiv.org/abs/2602.05725
 
 - Muon Outperforms Adam in Tail-End Associative Memory Learning
   - Shuche Wang, Fengzhuo Zhang, Jiaxiang Li, Cunxiao Du, Chao Du, Tianyu Pang, Zhuoran Yang, Mingyi Hong, Vincent Y. F. Tan
@@ -91,6 +169,10 @@
   - https://arxiv.org/abs/2507.01598
 
 ## Empirical Evaluation
+
+- Muon with Spectral Guidance: Efficient Optimization for Scientific Machine Learning
+  - Binghang Lu, Jiahao Zhang, Guang Lin
+  - https://arxiv.org/abs/2602.16167
 
 - Practical Efficiency of Muon for Pretraining
   - Essential AI
@@ -125,7 +207,19 @@
   - UC Berkeley
   - https://arxiv.org/abs/2510.25000
 
-## Efficient Algorithm
+## Efficient Algorithms
+
+- Muon+: Towards Better Muon via One Additional Normalization Step
+  - Ruijie Zhang, Yequan Zhao, Ziyue Liu, Zhengyang Wang, Zheng Zhang
+  - https://arxiv.org/abs/2602.21545
+
+- TEON: Tensorized Orthonormalization Beyond Layer-Wise Muon for Large Language Model Pre-Training
+  - Ruijie Zhang, Yequan Zhao, Ziyue Liu, Zhengyang Wang, Dongyang Li, Yupeng Su, Sijia Liu, Zheng Zhang
+  - https://arxiv.org/abs/2601.23261
+
+- UNSO: Unified Newton Schulz Orthogonalization
+  - Chen Hu, Qianxi Zhao, Yuming Li, Mingyu Zhou, Xiyin Li
+  - https://arxiv.org/abs/2602.02500
 
 - LiMuon: Light and Fast Muon Optimizer for Large Models
   - Nanjing University of Aeronautics and Astronautics
