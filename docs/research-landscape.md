@@ -402,6 +402,10 @@ re-materializing full parameters that sharding existed to avoid.
   buffer, so orthonormalized updates compose with sharded weights. Quality depends on
   the rank fraction. [Dion2](https://arxiv.org/abs/2512.16928) simplifies this to
   random row/column sampling, running the iteration on a sub-block.
+  [Orth-Dion](https://arxiv.org/abs/2605.16341) attacks the same family from the
+  geometry side, arguing that column normalization does not yield the rank-r polar
+  factor and that replacing it with QR orthogonalization of the right factor removes
+  a sqrt(r) penalty in the rate.
 - *Block-periodic and blockwise orthogonalization.*
   [MuonBP](https://arxiv.org/abs/2510.16981) orthogonalizes per-device shards
   independently most steps and does a full orthogonalization periodically, with two
